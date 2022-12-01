@@ -5,11 +5,12 @@
 class Deck 
 {
 private:
-	std::vector<Card*> deck_;
+	std::vector<Card> deck_;
 public:
 	Deck();
 	~Deck() {};
 	void generateDeck();
-	std::vector<Card*> getDeck();
+	std::vector<Card> getDeck();
+	Card getCard(int i);
 };
 

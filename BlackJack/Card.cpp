@@ -6,7 +6,7 @@ Card::Card()
 }
 
 int Card::getScore() {
-	if (score_card > 18) {
+	if (score_card < 8) {
 		return score_card + 2;
 	}
 	else if (score_card > 8 && score_card < 12) {

@@ -15,7 +15,7 @@ int main()
 	deck1.generateDeck();
 	for (size_t i = 0; i < deck1.getDeck().size(); i++)
 	{
-		std::cout << deck1.getDeck()[i]->getScore()<< " ";
-		std::cout << deck1.getDeck()[i]->getSuit() << std::endl;
+		std::cout << deck1.getCard(i).getScore()<< " ";
+		std::cout << deck1.getCard(i).getSuit() << std::endl;
 	}
 }
