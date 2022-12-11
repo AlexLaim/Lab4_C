@@ -8,9 +8,8 @@ private:
 	std::vector<Card> deck_;
 public:
 	Deck();
-	~Deck() {};
 	void generateDeck();
-	std::vector<Card> getDeck();
-	Card getCard(int i);
+	 std::vector<Card> getDeck();
+	 virtual Card getCard(int i);
 };
 

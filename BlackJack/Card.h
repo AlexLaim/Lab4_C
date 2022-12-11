@@ -1,6 +1,8 @@
 #pragma once
+#include <ostream>
 class Card
 {
+	friend std::ostream& operator<< (std::ostream& out, const Card& card);
 private:
 	enum score {
 		two,
@@ -15,21 +17,23 @@ private:
 		J,
 		Q,
 		K,
-		A
+		A,
+		end_card
 	};
 	enum suit {
 		heart,
 		diamond,
 		club,
-		spade
+		spade,
+		end_suit
 	};
-
 	score score_card;
 	suit suit_card;
 public:
 	Card();
-	int getScore();
-	const char* getSuit();
-	void setCard();
+	virtual int getScore();
+	virtual int getScoreDealer(int dealerScore_);
+	virtual ~Card(){};
+	Card::score getScoreCard(const Card& card);
 };
 

@@ -7,7 +7,7 @@ void Deck::generateDeck() {
 	deck_.resize(52);
 	for (size_t i = 0; i < deck_.size(); i++)
 	{
-		deck_[i].setCard();
+		deck_[i];
 	}
 }
 
@@ -16,5 +16,7 @@ std::vector<Card> Deck::getDeck() {
 }
 
 Card Deck::getCard(int i) {
-	return deck_[i];
+	Card tmp = deck_[i];
+	deck_.erase(deck_.begin());
+	return tmp;
 }

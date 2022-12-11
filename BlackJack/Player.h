@@ -1,6 +1,14 @@
 #pragma once
-#include "Game.h"
-class Player : public Game
+#include <vector>
+#include "Card.h"
+class Player
 {
+public:
+	Player();
+	std::vector<Card> getPlayerDeck();
+	Card getCard(int i);
+	void setCard(Card card);
+private:
+	std::vector<Card> playerCard;
 };
 
