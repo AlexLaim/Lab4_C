@@ -1,6 +1,4 @@
 ﻿#include <iostream>
-#include "Card.h"
-#include "Deck.h"
 #include "Game.h"
 
 int main()

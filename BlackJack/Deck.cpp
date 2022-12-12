@@ -2,6 +2,13 @@
 Deck::Deck() {
 	
 }
+Deck::Deck(int size) {
+	deck_.resize(size);
+	for (size_t i = 0; i < size; i++)
+	{
+		deck_[i];
+	}
+}
 
 void Deck::generateDeck() {
 	deck_.resize(52);
