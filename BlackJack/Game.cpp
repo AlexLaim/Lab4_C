@@ -66,12 +66,19 @@ void Game::play() {
 			{
 				playerScore += player_.getCard(i).getScore();
 			}
-			if (playerScore > 21) {
-				std::cout << "\nВы проиграли! Перебор!";
+			try
+			{
+				if (playerScore > 21) {
+					throw std::invalid_argument("Вы проиграли! Перебор!");
+				}
+			}
+			catch (const std::invalid_argument& e)
+			{
 				flag = false;
+				std::cout << "\nВы проиграли! Перебор!";
 				break;
 			}
-			else if (playerScore == 21) {
+			 if (playerScore == 21) {
 				std::cout << "\nБлек-джек! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
 				flag = false;
 				break;
@@ -85,7 +92,6 @@ void Game::play() {
 					if (dealer_.getDealerDeck().size() == 3 && dealer_.getCard(0).getScoreCard(dealer_.getCard(0)) == 12 && dealer_.getCard(1).getScoreCard(dealer_.getCard(1)) == 12) {
 						std::cout << "Проигрыш! У дилера пара тузов!";
 						flag = false;
-						break;
 					}
 					dealerScore += dealer_.getCard(i).getScoreDealer(dealerScore);
 				}
@@ -97,18 +103,25 @@ void Game::play() {
 			{
 				std::cout << dealer_.getCard(i);
 				dealerScore += dealer_.getCard(i).getScoreDealer(dealerScore);
-				if (dealerScore > 21) {
-					std::cout << "\nВы выиграли! У дилера перебор! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
-					flag = false;
-					break;
-				}
 			}
 			std::cout << "\nВы:";
 			for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
 			{
 				std::cout << player_.getCard(i);
 			}
-			if (dealerScore == 21) {
+			try
+			{
+				if (dealerScore > 21) {
+					throw std::invalid_argument("Вы выиграли! У дилера перебор!");
+				}
+			}
+			catch (const std::invalid_argument& e)
+			{
+				flag = false;
+				std::cout << "\nВы выиграли! У дилера перебор! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
+				break;
+			}
+			 if (dealerScore == 21) {
 				std::cout << "\nВы проиграли! У дилера блек-джек!";
 			}
 			else if (playerScore == dealerScore) {
@@ -148,16 +161,23 @@ void Game::play() {
 					{
 						std::cout << dealer_.getCard(i);
 						dealerScore += dealer_.getCard(i).getScoreDealer(dealerScore);
-						if (dealerScore > 21) {
-							std::cout << "\nВы выиграли! У дилера перебор! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
-							flag = false;
-							break;
-						}
 					}
 					std::cout << "\nВы:";
 					for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
 					{
 						std::cout << player_.getCard(i);						
+					}
+					try
+					{
+						if (dealerScore > 21) {
+							throw std::invalid_argument("Вы выиграли! У дилера перебор!");
+						}
+					}
+					catch (const std::invalid_argument& e)
+					{
+						flag = false;
+						std::cout << "\nВы выиграли! У дилера перебор! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
+						break;
 					}
 					if (dealerScore == 21) {
 						std::cout << "\nВы проиграли! У дилера блек-джек!";
@@ -192,11 +212,19 @@ void Game::play() {
 					{
 						playerScore += player_.getCard(i).getScore();
 					}
-					if (playerScore > 21) {
-						std::cout << "\nВы проиграли! Перебор!";
-						flag = false;
+					try
+					{
+						if (playerScore > 21) {
+							throw std::invalid_argument("Вы проиграли! Перебор!");
+						}
 					}
-					else if (playerScore == 21) {
+					catch (const std::invalid_argument& e)
+					{
+						flag = false;
+						std::cout << "\nВы проиграли! Перебор!";
+						break;
+					}
+					if (playerScore == 21) {
 						std::cout << "\nБлек-джек! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
 						flag = false;
 					}
