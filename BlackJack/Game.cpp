@@ -1,26 +1,28 @@
 #include "Game.h"
+#include "Adapter.h"
 
 
 Game::Game() {
 	decks.resize(4);
-	for (size_t i = 0; i < decks.size(); i++)
+	for (int i = 0; i < decks.size(); i++)
 	{
 		decks[i].generateDeck();
 	}
 }
 
 void Game::showDeck() {
-	for (size_t i = 0; i < decks.size(); i++)
+	for (int i = 0; i < decks.size(); i++)
 	{
-		for (size_t j = 0; j < decks[i].getDeck().size(); j++)
+		std::cout << "\nDECK №" << i << std::endl;
+		for (int j = 0; j < decks[i].getDeck().size(); j++)
 		{
 			std::cout << decks[i].getCard(j);
 		}
-		std::cout << "\nNEXT DECK" << std::endl;
 	}
 }
 
 void Game::play() {
+	IFormattable*  adapter = new Adapter();
 	Dealer dealer_;
 	Player player_;
 	bool flag = true, isDouble = true;
@@ -32,14 +34,15 @@ void Game::play() {
 		player_.setCard(decks[numberDeck].getCard(0));
 		std::cout << "Колоды: " << "[" << decks[0].getDeck().size() <<"] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 		std::cout << "Дилер:";
-		for (size_t i = 0; i < dealer_.getDealerDeck().size(); i++)
+		for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 		{
 			std::cout << dealer_.getCard(i);
 		}
 		std::cout << "\nВы:";
-		for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
+		
+		adapter->prettyPrint(adapter->format(player_));
+		for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 		{
-			std::cout << player_.getCard(i);
 			if (player_.getPlayerDeck().size() == 3 && player_.getCard(0).getScoreCard(player_.getCard(0)) == 12 && player_.getCard(1).getScoreCard(player_.getCard(1))) {
 				std::cout << "Поздравляем! У вас пара тузов! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
 				flag = false;
@@ -57,12 +60,9 @@ void Game::play() {
 			bet *= 2;
 			std::cout << "Вы удвоили ставку! Ваша ставка: " << bet << std::endl;
 			player_.setCard(decks[numberDeck].getCard(0));
-			for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
-			{
-				std::cout << player_.getCard(i);
-			}
+			adapter->prettyPrint(adapter->format(player_));
 			playerScore = 0;
-			for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
+			for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 			{
 				playerScore += player_.getCard(i).getScore();
 			}
@@ -87,7 +87,7 @@ void Game::play() {
 				numberDeck = rand() % 4;
 				dealer_.setCard(decks[numberDeck].getCard(0));
 				dealerScore = 0;
-				for (size_t i = 0; i < dealer_.getDealerDeck().size(); i++)
+				for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 				{
 					if (dealer_.getDealerDeck().size() == 3 && dealer_.getCard(0).getScoreCard(dealer_.getCard(0)) == 12 && dealer_.getCard(1).getScoreCard(dealer_.getCard(1)) == 12) {
 						std::cout << "Проигрыш! У дилера пара тузов!";
@@ -99,16 +99,13 @@ void Game::play() {
 			dealerScore = 0;
 			std::cout << "Колоды: " << "[" << decks[0].getDeck().size() << "] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 			std::cout << "Дилер:";
-			for (size_t i = 0; i < dealer_.getDealerDeck().size(); i++)
+			for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 			{
 				std::cout << dealer_.getCard(i);
 				dealerScore += dealer_.getCard(i).getScoreDealer(dealerScore);
 			}
 			std::cout << "\nВы:";
-			for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
-			{
-				std::cout << player_.getCard(i);
-			}
+			adapter->prettyPrint(adapter->format(player_));
 			try
 			{
 				if (dealerScore > 21) {
@@ -144,7 +141,7 @@ void Game::play() {
 						numberDeck = rand() % 4;
 						dealer_.setCard(decks[numberDeck].getCard(0));
 						dealerScore = 0;
-						for (size_t i = 0; i < dealer_.getDealerDeck().size(); i++)
+						for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 						{
 							if (dealer_.getDealerDeck().size() == 3 && dealer_.getCard(0).getScoreCard(dealer_.getCard(0)) == 12 && dealer_.getCard(1).getScoreCard(dealer_.getCard(1)) == 12) {
 								std::cout << "Проигрыш! У дилера пара тузов!";
@@ -157,15 +154,17 @@ void Game::play() {
 					dealerScore = 0;
 					std::cout << "Колоды: " << "[" << decks[0].getDeck().size() << "] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 					std::cout << "Дилер:";
-					for (size_t i = 0; i < dealer_.getDealerDeck().size(); i++)
+					for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 					{
 						std::cout << dealer_.getCard(i);
 						dealerScore += dealer_.getCard(i).getScoreDealer(dealerScore);
 					}
 					std::cout << "\nВы:";
-					for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
+					adapter->prettyPrint(adapter->format(player_));
+					playerScore = 0;
+					for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 					{
-						std::cout << player_.getCard(i);						
+						playerScore += player_.getCard(i).getScore();
 					}
 					try
 					{
@@ -198,17 +197,14 @@ void Game::play() {
 					std::cout << "Колоды: " << "[" << decks[0].getDeck().size() << "] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 					std::cout << "Дилер:";
 					dealerScore = 0;
-					for (size_t i = 0; i < dealer_.getDealerDeck().size(); i++)
+					for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 					{
 						std::cout << dealer_.getCard(i);
 					}
 					std::cout << "\nВы:";
-					for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
-					{
-						std::cout << player_.getCard(i);
-					}
+					adapter->prettyPrint(adapter->format(player_));
 					playerScore = 0;
-					for (size_t i = 0; i < player_.getPlayerDeck().size(); i++)
+					for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 					{
 						playerScore += player_.getCard(i).getScore();
 					}

@@ -1,6 +1,7 @@
 #include "Card.h"
 #include <iostream>
 #include <random>
+#include <windows.h>
 
 Card::Card()
 {
@@ -10,6 +11,7 @@ Card::Card()
 
 std::ostream& operator<<(std::ostream &out, const Card &card) {
 	char suit;
+	HANDLE hwnd = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (card.suit_card == 0)
 	{
 		suit = '\x04';

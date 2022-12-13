@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 #include "Card.h"
-class Player
+
+class Player 
 {
 public:
 	Player();

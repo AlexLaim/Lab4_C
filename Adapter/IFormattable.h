@@ -5,7 +5,7 @@
 class IFormattable
 {
 public:
-	virtual std::string format();
-	virtual void prettyPrint(const Deck& object);
+	virtual std::string format() = 0;
+	virtual void prettyPrint(const Deck& object) = 0;
 };
 
