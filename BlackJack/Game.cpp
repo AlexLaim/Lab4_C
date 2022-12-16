@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "Adapter.h"
 
-
+//Контруктор
 Game::Game() {
 	decks.resize(4);
 	for (int i = 0; i < decks.size(); i++)
@@ -9,7 +9,7 @@ Game::Game() {
 		decks[i].generateDeck();
 	}
 }
-
+//Показать колоду
 void Game::showDeck() {
 	for (int i = 0; i < decks.size(); i++)
 	{
@@ -20,27 +20,33 @@ void Game::showDeck() {
 		}
 	}
 }
-
+//Метод игры
 void Game::play() {
 	IFormattable*  adapter = new Adapter();
 	Dealer dealer_;
 	Player player_;
 	bool flag = true, isDouble = true;
+	//Интерактив с игроком
 		std::cout << "Ваша ставка?\n";
+		//Ставка
 		std::cin >> bet;
+		//Рандомный выбор колоды
 		int numberDeck = rand() % 4;
+		//Добавление карт в колоды дилера и игрока
 		dealer_.setCard(decks[numberDeck].getCard(0));
 		player_.setCard(decks[numberDeck].getCard(0));
 		player_.setCard(decks[numberDeck].getCard(0));
 		std::cout << "Колоды: " << "[" << decks[0].getDeck().size() <<"] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 		std::cout << "Дилер:";
+		//Вывод карт дилера
 		for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 		{
 			std::cout << dealer_.getCard(i);
 		}
 		std::cout << "\nВы:";
-		
+		//Отдельный вывод для карт игрока
 		adapter->prettyPrint(adapter->format(player_));
+		//Цикл проверки карт
 		for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 		{
 			if (player_.getPlayerDeck().size() == 3 && player_.getCard(0).getScoreCard(player_.getCard(0)) == 12 && player_.getCard(1).getScoreCard(player_.getCard(1))) {
@@ -51,17 +57,20 @@ void Game::play() {
 		}
 	while (flag)
 	{
+		//Если это первый ход, то можно удвоить ставку, в противном случае нельзя.
 		if (player_.getPlayerDeck().size() == 2) {
 			std::cout << "\n1. Хватит\n2. Еще\n3. Дабл\n";
 		}else std::cout << "\n1. Хватит\n2. Еще\n";
 		int action;
 		std::cin >> action;
+		//Если ставка была удвоена
 		if (action == 3 && isDouble) {
 			bet *= 2;
 			std::cout << "Вы удвоили ставку! Ваша ставка: " << bet << std::endl;
 			player_.setCard(decks[numberDeck].getCard(0));
 			adapter->prettyPrint(adapter->format(player_));
 			playerScore = 0;
+			//подсчет очков игрока
 			for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 			{
 				playerScore += player_.getCard(i).getScore();
@@ -69,26 +78,32 @@ void Game::play() {
 			try
 			{
 				if (playerScore > 21) {
+					//Генерация исключения
 					throw std::invalid_argument("Вы проиграли! Перебор!");
 				}
 			}
 			catch (const std::invalid_argument& e)
 			{
+				//Обработка в случае исключения
 				flag = false;
 				std::cout << "\nВы проиграли! Перебор!";
 				break;
 			}
+			//Если у игрока Бдек-джек
 			 if (playerScore == 21) {
 				std::cout << "\nБлек-джек! Ваш выигрыш: " << bet << " Всего: " << bet * 2;
 				flag = false;
 				break;
 			}
+			 //Цикл набора карт дилером
 			while (dealerScore < 18) {
 				numberDeck = rand() % 4;
 				dealer_.setCard(decks[numberDeck].getCard(0));
 				dealerScore = 0;
+				//Подсчет очков дилера
 				for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 				{
+					//Если у дилера пара тузов
 					if (dealer_.getDealerDeck().size() == 3 && dealer_.getCard(0).getScoreCard(dealer_.getCard(0)) == 12 && dealer_.getCard(1).getScoreCard(dealer_.getCard(1)) == 12) {
 						std::cout << "Проигрыш! У дилера пара тузов!";
 						flag = false;
@@ -97,6 +112,7 @@ void Game::play() {
 				}
 			}
 			dealerScore = 0;
+			//Вывод колод
 			std::cout << "Колоды: " << "[" << decks[0].getDeck().size() << "] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 			std::cout << "Дилер:";
 			for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
@@ -106,6 +122,7 @@ void Game::play() {
 			}
 			std::cout << "\nВы:";
 			adapter->prettyPrint(adapter->format(player_));
+			//Вариации конца игры
 			try
 			{
 				if (dealerScore > 21) {
@@ -137,12 +154,15 @@ void Game::play() {
 			switch (action)
 			{
 				case 1:
+					//Цикл набора карт дилером
 					while (dealerScore < 18) {
 						numberDeck = rand() % 4;
 						dealer_.setCard(decks[numberDeck].getCard(0));
 						dealerScore = 0;
+						//Подсчет очков дилера
 						for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
 						{
+							//Если у дилера пара тузов
 							if (dealer_.getDealerDeck().size() == 3 && dealer_.getCard(0).getScoreCard(dealer_.getCard(0)) == 12 && dealer_.getCard(1).getScoreCard(dealer_.getCard(1)) == 12) {
 								std::cout << "Проигрыш! У дилера пара тузов!";
 								flag = false;
@@ -152,6 +172,7 @@ void Game::play() {
 						}
 					}
 					dealerScore = 0;
+					//Вывод колод
 					std::cout << "Колоды: " << "[" << decks[0].getDeck().size() << "] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 					std::cout << "Дилер:";
 					for (int i = 0; i < dealer_.getDealerDeck().size(); i++)
@@ -162,6 +183,7 @@ void Game::play() {
 					std::cout << "\nВы:";
 					adapter->prettyPrint(adapter->format(player_));
 					playerScore = 0;
+					//Вариации конца игры
 					for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 					{
 						playerScore += player_.getCard(i).getScore();
@@ -193,7 +215,9 @@ void Game::play() {
 					flag = false;
 					break;
 				case 2:
+					//Взятие карты
 					player_.setCard(decks[numberDeck].getCard(0));
+					//Вывод колод
 					std::cout << "Колоды: " << "[" << decks[0].getDeck().size() << "] " << "[" << decks[1].getDeck().size() << "] " << "[" << decks[2].getDeck().size() << "] " << "[" << decks[3].getDeck().size() << "]\n";
 					std::cout << "Дилер:";
 					dealerScore = 0;
@@ -204,6 +228,7 @@ void Game::play() {
 					std::cout << "\nВы:";
 					adapter->prettyPrint(adapter->format(player_));
 					playerScore = 0;
+					//Расчет очков игрока и отдельные случаи победы-поражения
 					for (int i = 0; i < player_.getPlayerDeck().size(); i++)
 					{
 						playerScore += player_.getCard(i).getScore();

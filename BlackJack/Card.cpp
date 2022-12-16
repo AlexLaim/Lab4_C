@@ -3,12 +3,13 @@
 #include <random>
 #include <windows.h>
 
+//Конструктор
 Card::Card()
 {
 	suit_card = static_cast<suit>(rand() % end_suit);
 	score_card = static_cast<score>(rand() % end_card);
 }
-
+//Перегрузка оператора вывода
 std::ostream& operator<<(std::ostream &out, const Card &card) {
 	char suit;
 	HANDLE hwnd = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -44,7 +45,7 @@ std::ostream& operator<<(std::ostream &out, const Card &card) {
 	return out;
 }
 
-
+//Метод расчета очков
 int Card::getScore() {
 	if (score_card < 8) {
 		return score_card + 2;
@@ -73,7 +74,7 @@ int Card::getScore() {
 		}
 	}
 }
-
+//Отдельный метод расчета очков для дилера
 int Card::getScoreDealer(int dealerScore_) {
 	if (score_card < 8) {
 		return score_card + 2;
@@ -90,7 +91,7 @@ int Card::getScoreDealer(int dealerScore_) {
 		}
 	}
 }
-
+//Получение числа очков карты
 Card::score Card::getScoreCard(const Card& card) {
 	return card.score_card;
 }
